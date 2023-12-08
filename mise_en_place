@@ -1,0 +1,50 @@
+# Aller sur le bureau
+cd Desktop
+
+# Générer la clé SSH pour l'utilisateur ROOT et copier sa valeur pour l'ajouter aux paramètre du compte GitHub
+sudo ssh-keygen -t ed25519 -C "pierre-david.belanger@qvpinc.com"
+enter
+enter
+enter
+sudo cat /root/.ssh/id_ed25519.pub
+
+# Cloner le Repo
+sudo git clone git@github.com:QVP-PierreDavidBelanger/QVP-Sechoir.git
+
+# Copier le contenu du Repo sur le bureau
+cp -r QVP-Sechoir/* .
+
+# Créer le fichier de log
+touch test.log
+
+# Éditer le fichier /etc/rc.local
+sudo nano /etc/rc.local
+
+# Ajouter les lignes suivantes avant ' exit 0 '
+# AutoStart Program on boot
+/sbin/iwconfig wlan0 power off
+sudo update-alternatives --install $(which python) python $(readlink -f $(which python3)) 3
+sudo cp /home/pi/Desktop/test.log /home/pi/Desktop/dernier.log
+python3 -u /home/pi/Desktop/sechoir.py > /home/pi/Desktop/test.log
+
+# Éditer le fichier /etc/network/interfaces
+sudo nano /etc/network/interfaces
+
+# Ajouter les lignes suivantes
+allow-hotplug wlan0
+  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+wireless-power off
+
+# Sélectionner python3 par défaut
+sudo update-alternatives --install $(which python) python $(readlink -f $(which python3)) 3
+
+# Activer la connexion SSH
+# Préférences0>Configuration du Raspberry Pi->Interfaces->SSH->Activé 
+
+## Interface Utilisateur ##
+
+# Désactiver la mise en veille
+# Préférences0>Configuration du Raspberry Pi->Display->Screen Blanking->Désactivé 
+
+# Redémarrer
+sudo reboot
