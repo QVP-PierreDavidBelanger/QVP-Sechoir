@@ -14,26 +14,26 @@ sudo git clone git@github.com:QVP-PierreDavidBelanger/QVP-Sechoir.git
 # Copier le contenu du Repo sur le bureau
 cp -r QVP-Sechoir/* .
 
-# Créer le fichier de log
-touch test.log
+chmod +x *.sh
 
-# Éditer le fichier /etc/rc.local
-sudo nano /etc/rc.local
+# Permettre au programme de démarrer automatiquement et d’enlever l’économiseur d’écran en ajoutant ce bout de code à la fin du fichier ([ctrl] + [shift] + [V] pour coller dans un terminal) :
+# AutoStart Program on boot && Disable screensaver
+@lxterminal sudo chmod 755 /home/pi/Desktop/save.txt
+@lxterminal sudo -e python3 /home/pi/Desktop/sechoir.py
+@xset s off
+@xset -dpms
+@xset s noblank
 
-# Ajouter les lignes suivantes avant ' exit 0 '
-# AutoStart Program on boot
-/sbin/iwconfig wlan0 power off
-sudo update-alternatives --install $(which python) python $(readlink -f $(which python3)) 3
-sudo cp /home/pi/Desktop/test.log /home/pi/Desktop/dernier.log
-python3 -u /home/pi/Desktop/sechoir.py > /home/pi/Desktop/test.log
+#Installer le logiciel de gestion d’économiseur d’écran à l’aide de la commande suivante : 
+sudo apt-get install xscreensaver
 
-# Éditer le fichier /etc/network/interfaces
-sudo nano /etc/network/interfaces
+#Lancer le logiciel de gestion d’économiseur d’écran (XScreenSaver) à l’aide de la commande suivante : 
+xscreensaver
 
-# Ajouter les lignes suivantes
-allow-hotplug wlan0
-  wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-wireless-power off
+#Désactiver l’économiseur d’écran en appuyant sur le bouton [Settings]. 
+#Localiser la liste déroulante Mode : initialisée à la valeur Économiseur d’écran aléatoire 
+#et changer cette valeur pour la valeur suivante : 
+#Désactiver l’économiseur d’écran puis fermer l’application XScreenSaver.
 
 # Sélectionner python3 par défaut
 sudo update-alternatives --install $(which python) python $(readlink -f $(which python3)) 3
